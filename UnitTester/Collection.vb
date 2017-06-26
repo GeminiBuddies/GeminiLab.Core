@@ -72,7 +72,7 @@ Imports GeminiLab.Core.Collections
                 Dim times = ran.Next(1, 10), sb As New StringBuilder
 
                 For j As Integer = 1 To times
-                    sb.Append("1234567890qwertyuiopasdfghjklzxcvbnm"(ran.Next(0, 35)))
+                    sb.Append("1234567890qwertyuiopasdfghjklzxcvbnm"(ran.Next(0, 36)))
                 Next
 
                 str = sb.ToString()

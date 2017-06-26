@@ -47,8 +47,7 @@ namespace GeminiLab.Core
 
                 used = true;
 
-                if ((value >= mutter.end && mutter.step > 0)
-                 || (value <= mutter.end && mutter.step < 0)) return false;
+                if ((value >= mutter.end && mutter.step > 0) || (value <= mutter.end && mutter.step < 0)) return false;
                 return true;
             }
 
@@ -95,8 +94,7 @@ namespace GeminiLab.Core
 
                 used = true;
 
-                if ((value >= mutter.end && mutter.step > 0)
-                 || (value <= mutter.end && mutter.step < 0)) return false;
+                if ((value >= mutter.end && mutter.step > 0) || (value <= mutter.end && mutter.step < 0)) return false;
                 return true;
             }
 

@@ -26,8 +26,6 @@ namespace GeminiLab.Core.Collections
                 action(i);
                 yield return i;
             }
-
-            yield break;
         }
 
         public static void EndChainForEach<T>(this IEnumerable<T> source)
@@ -97,6 +95,35 @@ namespace GeminiLab.Core.Collections
 
             int count = startIndex;
             return source.ToDictionary(any => count++);
+        }
+    }
+
+    public static class EnumerableOfString
+    {
+        public static string JoinBy(this IEnumerable<string> value, string separator) => string.Join(separator, value);
+        public static string JoinBy(this IEnumerable<char> value, string separator) => string.Join(separator, value);
+
+        public static string Join(this IEnumerable<string> value) => string.Join("", value);
+        public static string Join(this IEnumerable<char> value) => string.Join("", value);
+
+        public static string Join(this string separator, IEnumerable<string> value) => string.Join(separator, value);
+    }
+
+    public static class EnumerableAndRandom
+    {
+        public static Random staticRan = new Random();
+
+        public static T Choose<T>(this IEnumerable<T> source) => source.ToList().Choose();
+        public static T Choose<T>(this IEnumerable<T> source, Random ran) => source.ToList().Choose(ran);
+
+        public static T Choose<T>(this IList<T> source) => Choose(source, staticRan);
+
+        public static T Choose<T>(this IList<T> source, Random ran)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (ran == null) throw new ArgumentNullException("ran");
+
+            return source[ran.Next(0, source.Count)];
         }
     }
 }
