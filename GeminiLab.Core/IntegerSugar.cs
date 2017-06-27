@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace GeminiLab.Core
-{
-    public static class IntegerSugar
-    {
-        public static IEnumerable<T> Times<T>(this int v, Func<T> fn)
-        {
+namespace GeminiLab.Core {
+    public static class IntegerSugar {
+        public static IEnumerable<T> Times<T>(this int v, Func<T> fn) {
             if (fn == null) throw new ArgumentNullException("fn");
             if (v < 0) throw new ArgumentOutOfRangeException("v", v, "v should be greater than 0.");
             if (v == 0) yield break;
@@ -15,8 +12,7 @@ namespace GeminiLab.Core
             for (int i = 0; i < v; ++i) yield return fn();
         }
 
-        public static void Times<T>(this int v, Action act)
-        {
+        public static void Times<T>(this int v, Action act) {
             if (act == null) throw new ArgumentNullException("act");
             if (v < 0) throw new ArgumentOutOfRangeException("v", v, "v should be greater than 0.");
 

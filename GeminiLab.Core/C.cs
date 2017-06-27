@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeminiLab.Core
-{
+namespace GeminiLab.Core {
     public static class C // consts
     {
         public const string Lowercase = "abcdefghijklmnopqrstuvwxyz";

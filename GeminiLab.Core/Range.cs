@@ -5,19 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeminiLab.Core
-{
+namespace GeminiLab.Core {
     // python style range
     // [start, end)
-    public class Range : IEnumerable<int>
-    {
+    public class Range : IEnumerable<int> {
         int start, end, step;
 
         public Range() : this(0, 0, 1) { }
         public Range(int end) : this(0, end) { }
         public Range(int start, int end) : this(start, end, start <= end ? 1 : -1) { }
-        public Range(int start, int end, int step)
-        {
+        public Range(int start, int end, int step) {
             this.start = start;
             this.end = end;
             this.step = step;
@@ -29,8 +26,7 @@ namespace GeminiLab.Core
         IEnumerator<int> IEnumerable<int>.GetEnumerator() => new RangeEnumerator(this);
         IEnumerator IEnumerable.GetEnumerator() => new RangeEnumerator(this);
 
-        internal class RangeEnumerator : IEnumerator<int>
-        {
+        internal class RangeEnumerator : IEnumerator<int> {
             bool used;
             int value;
             Range mutter;
@@ -40,8 +36,7 @@ namespace GeminiLab.Core
 
             public void Dispose() { }
 
-            public bool MoveNext()
-            {
+            public bool MoveNext() {
                 if (!used) value = mutter.start;
                 else value += mutter.step;
 
@@ -56,15 +51,13 @@ namespace GeminiLab.Core
         }
     }
 
-    public class LongRange : IEnumerable<long>
-    {
+    public class LongRange : IEnumerable<long> {
         long start, end, step;
 
         public LongRange() : this(0, 0, 1) { }
         public LongRange(long end) : this(0, end) { }
         public LongRange(long start, long end) : this(start, end, start <= end ? 1 : -1) { }
-        public LongRange(long start, long end, long step)
-        {
+        public LongRange(long start, long end, long step) {
             this.start = start;
             this.end = end;
             this.step = step;
@@ -76,8 +69,7 @@ namespace GeminiLab.Core
         IEnumerator<long> IEnumerable<long>.GetEnumerator() => new LongRangeEnumerator(this);
         IEnumerator IEnumerable.GetEnumerator() => new LongRangeEnumerator(this);
 
-        internal class LongRangeEnumerator : IEnumerator<long>
-        {
+        internal class LongRangeEnumerator : IEnumerator<long> {
             bool used;
             long value;
             LongRange mutter;
@@ -87,8 +79,7 @@ namespace GeminiLab.Core
 
             public void Dispose() { }
 
-            public bool MoveNext()
-            {
+            public bool MoveNext() {
                 if (!used) value = mutter.start;
                 else value += mutter.step;
 

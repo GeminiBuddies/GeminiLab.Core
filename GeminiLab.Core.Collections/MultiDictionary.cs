@@ -5,78 +5,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeminiLab.Core.Collections
-{
-    public interface IMultiDictionary<TKey, TValue> : IDictionary<TKey, IEnumerable<TValue>>
-    {
+namespace GeminiLab.Core.Collections {
+    public interface IMultiDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, IEnumerable<TValue>>> {
+        int KeyCount { get; }
+        int ValueCount { get; }
 
+        IEnumerable<TValue> this[TKey key] { get; set; }
+        IEnumerable<TKey> Keys { get; }
+        IEnumerable<TValue> Values { get; }
+
+        void Add(TKey key, TValue value);
+        void Remove(TKey key, TValue value);
+        void RemoveAll(TKey key);
+        bool ContainsKey(TKey key);
+        bool Contains(TKey key, TValue value);
+
+        bool TryGetValue(TKey key, out IEnumerable<TValue> values);
     }
 
-    public class MultiDictionary<TKey, TValue> : IDictionary<TKey, IEnumerable<TValue>>, IEnumerable<KeyValuePair<TKey, IEnumerable<TValue>>>
-    {
-        IEnumerable<TValue> IDictionary<TKey, IEnumerable<TValue>>.this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public static class IMultiDictionaryExtension {
+        public static IEnumerable<KeyValuePair<TKey, TValue>> EnumeratePairs<TKey, TValue>(this IMultiDictionary<TKey, TValue> v) {
+            if (v == null) throw new ArgumentNullException("v");
 
-        ICollection<TKey> IDictionary<TKey, IEnumerable<TValue>>.Keys => throw new NotImplementedException();
+            foreach (var key in v.Keys)
+                foreach (var value in v[key]) yield return new KeyValuePair<TKey, TValue>(key, value);
+        }
+    }
 
-        ICollection<IEnumerable<TValue>> IDictionary<TKey, IEnumerable<TValue>>.Values => throw new NotImplementedException();
+    public class MultiDictionary<TKey, TValue> : IMultiDictionary<TKey, TValue> {
+        private Dictionary<TKey, HashSet<TValue>> innerDict;
 
-        int ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.Count => throw new NotImplementedException();
+        public MultiDictionary() {
+            innerDict = new Dictionary<TKey, HashSet<TValue>>();
+        }
 
-        bool ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.IsReadOnly => false;
+        public IEnumerable<TValue> this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        void IDictionary<TKey, IEnumerable<TValue>>.Add(TKey key, IEnumerable<TValue> value)
-        {
+        public int KeyCount => throw new NotImplementedException();
+
+        public int ValueCount => throw new NotImplementedException();
+
+        public IEnumerable<TKey> Keys => throw new NotImplementedException();
+
+        public IEnumerable<TValue> Values => throw new NotImplementedException();
+
+        public void Add(TKey key, TValue value) {
             throw new NotImplementedException();
         }
 
-        void ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.Add(KeyValuePair<TKey, IEnumerable<TValue>> item)
-        {
+        public bool Contains(TKey key, TValue value) {
             throw new NotImplementedException();
         }
 
-        void ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.Clear()
-        {
+        public bool ContainsKey(TKey key) {
             throw new NotImplementedException();
         }
 
-        bool ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.Contains(KeyValuePair<TKey, IEnumerable<TValue>> item)
-        {
+        public IEnumerator<KeyValuePair<TKey, IEnumerable<TValue>>> GetEnumerator() {
             throw new NotImplementedException();
         }
 
-        bool IDictionary<TKey, IEnumerable<TValue>>.ContainsKey(TKey key)
-        {
+        public void Remove(TKey key, TValue value) {
             throw new NotImplementedException();
         }
 
-        void ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.CopyTo(KeyValuePair<TKey, IEnumerable<TValue>>[] array, int arrayIndex)
-        {
+        public void RemoveAll(TKey key) {
             throw new NotImplementedException();
         }
 
-        IEnumerator<KeyValuePair<TKey, IEnumerable<TValue>>> IEnumerable<KeyValuePair<TKey, IEnumerable<TValue>>>.GetEnumerator()
-        {
+        public bool TryGetValue(TKey key, out IEnumerable<TValue> values) {
             throw new NotImplementedException();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IDictionary<TKey, IEnumerable<TValue>>.Remove(TKey key)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICollection<KeyValuePair<TKey, IEnumerable<TValue>>>.Remove(KeyValuePair<TKey, IEnumerable<TValue>> item)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool IDictionary<TKey, IEnumerable<TValue>>.TryGetValue(TKey key, out IEnumerable<TValue> value)
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             throw new NotImplementedException();
         }
     }
+
+}
 }
