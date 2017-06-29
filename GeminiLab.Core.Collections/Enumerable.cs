@@ -73,6 +73,19 @@ namespace GeminiLab.Core.Collections {
             foreach (var i in source) if (i != null) yield return i;
         }
 
+        public static IEnumerable<T> Take<T>(this IEnumerable<T> source, int start, int length) {
+            var en = source.GetEnumerator();
+
+            for (int i = 0; i < start; ++i) {
+                if (!en.MoveNext()) yield break;
+            }
+
+            for (int i = 0; i < length; ++i) {
+                if (!en.MoveNext()) yield break;
+                yield return en.Current;
+            }
+        }
+
         public static Dictionary<int, T> NumberItems<T>(this IEnumerable<T> source) => source.NumberItems(0);
 
         public static Dictionary<int, T> NumberItems<T>(this IEnumerable<T> source, int startIndex) {

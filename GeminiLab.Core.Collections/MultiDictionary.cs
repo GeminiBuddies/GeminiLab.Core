@@ -15,8 +15,8 @@ namespace GeminiLab.Core.Collections {
         IEnumerable<TValue> Values { get; }
 
         void Add(TKey key, TValue value);
-        void Remove(TKey key, TValue value);
-        void RemoveAll(TKey key);
+        bool Remove(TKey key, TValue value);
+        bool RemoveAll(TKey key);
         bool ContainsKey(TKey key);
         bool Contains(TKey key, TValue value);
 
@@ -39,48 +39,83 @@ namespace GeminiLab.Core.Collections {
             innerDict = new Dictionary<TKey, HashSet<TValue>>();
         }
 
-        public IEnumerable<TValue> this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IEnumerable<TValue> this[TKey key] { get => innerDict[key]; set => innerDict[key] = new HashSet<TValue>(value); }
 
-        public int KeyCount => throw new NotImplementedException();
+        public int KeyCount => innerDict.Count;
+        public int ValueCount {
+            get {
+                int acc = 0;
+                foreach (var key in innerDict.Keys) {
+                    acc += innerDict[key].Count;
+                }
+                return acc;
+            }
+        }
 
-        public int ValueCount => throw new NotImplementedException();
-
-        public IEnumerable<TKey> Keys => throw new NotImplementedException();
-
-        public IEnumerable<TValue> Values => throw new NotImplementedException();
+        public IEnumerable<TKey> Keys => innerDict.Keys;
+        public IEnumerable<TValue> Values {
+            get {
+                foreach (var key in innerDict.Keys) {
+                    foreach (var val in innerDict[key]) yield return val;
+                }
+            }
+        }
 
         public void Add(TKey key, TValue value) {
-            throw new NotImplementedException();
+            if (!innerDict.ContainsKey(key)) innerDict[key] = new HashSet<TValue>();
+
+            innerDict[key].Add(value);
         }
 
         public bool Contains(TKey key, TValue value) {
-            throw new NotImplementedException();
+            if (!innerDict.ContainsKey(key)) return false;
+
+            return innerDict[key].Contains(value);
         }
 
         public bool ContainsKey(TKey key) {
-            throw new NotImplementedException();
+            return innerDict.ContainsKey(key);
+        }
+
+        class MultiDictionaryEnumerator : IEnumerator<KeyValuePair<TKey, IEnumerable<TValue>>> {
+            IEnumerator<KeyValuePair<TKey, HashSet<TValue>>> innerE;
+
+            public KeyValuePair<TKey, IEnumerable<TValue>> Current => new KeyValuePair<TKey, IEnumerable<TValue>>(innerE.Current.Key, innerE.Current.Value);
+            object IEnumerator.Current => new KeyValuePair<TKey, IEnumerable<TValue>>(innerE.Current.Key, innerE.Current.Value);
+
+            public bool MoveNext() { return innerE.MoveNext(); }
+            public void Reset() { innerE.Reset(); }
+            public void Dispose() { innerE.Dispose(); }
+
+            public MultiDictionaryEnumerator(IEnumerator<KeyValuePair<TKey, HashSet<TValue>>> innerE) {
+                this.innerE = innerE;
+            }
         }
 
         public IEnumerator<KeyValuePair<TKey, IEnumerable<TValue>>> GetEnumerator() {
-            throw new NotImplementedException();
+            return new MultiDictionaryEnumerator(innerDict.GetEnumerator());
         }
 
-        public void Remove(TKey key, TValue value) {
-            throw new NotImplementedException();
+        public bool Remove(TKey key, TValue value) {
+            if (!innerDict.ContainsKey(key)) return false;
+            return innerDict[key].Remove(value);
         }
 
-        public void RemoveAll(TKey key) {
-            throw new NotImplementedException();
+        public bool RemoveAll(TKey key) {
+            return innerDict.Remove(key);
         }
 
         public bool TryGetValue(TKey key, out IEnumerable<TValue> values) {
-            throw new NotImplementedException();
+            if (innerDict.TryGetValue(key, out HashSet<TValue> v)) {
+                values = v;
+                return true;
+            } else {
+                values = default(IEnumerable<TValue>);
+                return false;
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() {
-            throw new NotImplementedException();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
-}
 }
