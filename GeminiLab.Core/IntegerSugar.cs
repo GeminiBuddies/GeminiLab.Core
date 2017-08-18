@@ -15,7 +15,7 @@ namespace GeminiLab.Core {
         public static void Times<T>(this int v, Action act) {
             if (act == null) throw new ArgumentNullException("act");
             if (v < 0) throw new ArgumentOutOfRangeException("v", v, "v should be greater than 0.");
-
+            
             for (int i = 0; i < v; ++i) act();
         }
 
