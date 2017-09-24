@@ -14,6 +14,7 @@ namespace GeminiLab.Core.Reflection {
         }
 
         // What is the best match
+        //   
         internal static MethodInfo BestMatch(MethodInfo[] Methods, Type[] args) {
             MethodInfo currBest = null;
 
@@ -27,7 +28,7 @@ namespace GeminiLab.Core.Reflection {
             var methodFilter = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
             var type = typeof(T);
-            var candidate = type.GetMethods(methodFilter).Where(x => x.Name == name);
+            var candidates = type.GetMethods(methodFilter).Where(x => x.Name == name);
             var targetMethod = type.GetMethod(name, methodFilter, null, (from i in args select i.GetType()).ToArray(), null) ?? throw new MissingMethodException(type.FullName, name);
 
             return targetMethod.Invoke(null, args);

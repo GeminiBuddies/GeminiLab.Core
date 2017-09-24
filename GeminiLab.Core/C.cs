@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GeminiLab.Core {
-    public static class C // consts
-    {
+    public static class C { // consts   
         public const string Lowercase = "abcdefghijklmnopqrstuvwxyz";
         public const string Uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
